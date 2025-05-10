@@ -64,6 +64,54 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'weeks',
+        path: '_weeks',
+        routeBasePath: 'weeks',
+        sidebarPath: './sidebars.ts',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'people',
+        path: '_people',
+        routeBasePath: 'people',
+        sidebarPath: './sidebars.ts',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'projects',
+        path: '_projects',
+        routeBasePath: 'projects',
+        sidebarPath: './sidebars.ts',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'tools',
+        path: '_tools',
+        routeBasePath: 'tools',
+        sidebarPath: './sidebars.ts',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'maneuvers',
+        path: '_maneuvers',
+        routeBasePath: 'maneuvers',
+        sidebarPath: './sidebars.ts',
+      },
+    ],
+  ],
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
@@ -79,6 +127,41 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Tutorial',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'weeksSidebar',
+          docsPluginId: 'weeks',
+          position: 'left',
+          label: 'Weeks',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'peopleSidebar',
+          docsPluginId: 'people',
+          position: 'left',
+          label: 'People',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'projectsSidebar',
+          docsPluginId: 'projects',
+          position: 'left',
+          label: 'Projects',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'toolsSidebar',
+          docsPluginId: 'tools',
+          position: 'left',
+          label: 'Tools',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'maneuversSidebar',
+          docsPluginId: 'maneuvers',
+          position: 'left',
+          label: 'Maneuvers',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
