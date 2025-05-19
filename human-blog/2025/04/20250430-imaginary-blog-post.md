@@ -1,8 +1,8 @@
 ---
-slug: mdx-blog-post
-title: MDX Blog Post
-authors: [slorber]
-tags: [docusaurus]
+slug: imaginary-blog-post
+title: Imaginary Blog Post
+authors: [mk]
+tags: [imaginary]
 ---
 
 Blog posts support [Docusaurus Markdown features](https://docusaurus.io/docs/markdown-features), such as [MDX](https://mdxjs.com/).
@@ -22,3 +22,6 @@ For example, use JSX to create an interactive button:
 ```
 
 <button onClick={() => alert('button clicked!')}>Click me!</button>
+
+
+# not a real post

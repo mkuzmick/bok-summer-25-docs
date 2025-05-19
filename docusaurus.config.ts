@@ -42,21 +42,6 @@ const config: Config = {
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -65,6 +50,44 @@ const config: Config = {
   ],
 
   plugins: [
+    // Human-written blog
+    [
+      '@docusaurus/plugin-content-blog',
+      {
+        id: 'human-blog',
+        routeBasePath: 'human-blog', // URL: /human-blog
+        path: './human-blog',
+        showReadingTime: true,
+        feedOptions: {
+          type: ['rss', 'atom'],
+          xslt: true,
+        },
+        editUrl:
+          'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        onInlineTags: 'warn',
+        onInlineAuthors: 'warn',
+        onUntruncatedBlogPosts: 'warn',
+      },
+    ],
+    // AI-generated blog
+    [
+      '@docusaurus/plugin-content-blog',
+      {
+        id: 'ai-blog',
+        routeBasePath: 'ai-blog', // URL: /ai-blog
+        path: './ai-blog',
+        showReadingTime: true,
+        feedOptions: {
+          type: ['rss', 'atom'],
+          xslt: true,
+        },
+        editUrl:
+          'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        onInlineTags: 'warn',
+        onInlineAuthors: 'warn',
+        onUntruncatedBlogPosts: 'warn',
+      },
+    ],
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -163,7 +186,8 @@ const config: Config = {
           position: 'left',
           label: 'Maneuvers',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/human-blog', label: 'Human Blog', position: 'left'},
+        {to: '/ai-blog', label: 'AI Blog', position: 'left'},
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
@@ -204,8 +228,12 @@ const config: Config = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: 'Human Blog',
+              to: '/human-blog',
+            },
+            {
+              label: 'AI Blog',
+              to: '/ai-blog',
             },
             {
               label: 'GitHub',
