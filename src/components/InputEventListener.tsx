@@ -1,5 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+// Web MIDI API type definitions
+interface MIDIMessageEvent extends Event {
+  data: Uint8Array;
+  receivedTime: number;
+}
+
+interface MIDIInput extends EventTarget {
+  addEventListener(type: 'midimessage', listener: (event: MIDIMessageEvent) => void): void;
+  removeEventListener(type: 'midimessage', listener: (event: MIDIMessageEvent) => void): void;
+}
+
+interface MIDIAccess {
+  inputs: Map<string, MIDIInput>;
+}
+
+declare global {
+  interface Navigator {
+    requestMIDIAccess(): Promise<MIDIAccess>;
+  }
+}
+
 interface LoggedEvent {
   type: string;
   data: any;
@@ -49,14 +70,14 @@ const InputEventListener: React.FC = () => {
 
   // MIDI event listener
   useEffect(() => {
-    let midiAccess: WebMidi.MIDIAccess | null = null;
-    let listeners: Array<() => void> = [];
+    let midiAccess: MIDIAccess | null = null;
+    const listeners: Array<() => void> = [];
     // Check for Web MIDI API support
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess().then((access) => {
         midiAccess = access;
-        for (let input of midiAccess.inputs.values()) {
-          const midiHandler = (event: WebMidi.MIDIMessageEvent) => {
+        for (const input of midiAccess.inputs.values()) {
+          const midiHandler = (event: MIDIMessageEvent) => {
             addEvent('midi', {
               data: Array.from(event.data),
               receivedTime: event.receivedTime,
