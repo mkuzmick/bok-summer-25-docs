@@ -56,7 +56,7 @@ const config: Config = {
       {
         id: 'human-blog',
         routeBasePath: 'human-blog', // URL: /human-blog
-        path: './human-blog',
+        path: './_human-blog',
         showReadingTime: true,
         feedOptions: {
           type: ['rss', 'atom'],
@@ -75,7 +75,7 @@ const config: Config = {
       {
         id: 'ai-blog',
         routeBasePath: 'ai-blog', // URL: /ai-blog
-        path: './ai-blog',
+        path: './_ai-blog',
         showReadingTime: true,
         feedOptions: {
           type: ['rss', 'atom'],
