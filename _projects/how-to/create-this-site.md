@@ -1,0 +1,669 @@
+# How To Build a Docs Site
+
+This guide shows you how to create a Docusaurus site like this one with multiple blog sections, multiple documentation sections, custom homepage, additional pages, and custom styling.
+
+## Prerequisites
+
+```bash
+npm install -g @docusaurus/init
+# or
+yarn global add @docusaurus/init
+```
+
+## 1. Initial Setup
+
+```bash
+npx create-docusaurus@latest my-website classic
+cd my-website
+npm start
+```
+
+## 2. Creating Multiple Blog-Style Sections
+
+To add multiple blog sections (like our Human Blog and AI Blog), modify `docusaurus.config.ts`:
+
+```typescript
+// Add to the plugins array in docusaurus.config.ts
+plugins: [
+  // Human-written blog
+  [
+    '@docusaurus/plugin-content-blog',
+    {
+      id: 'human-blog',
+      routeBasePath: 'human-blog', // URL: /human-blog
+      path: './_human-blog',
+      showReadingTime: true,
+      feedOptions: {
+        type: ['rss', 'atom'],
+        xslt: true,
+      },
+      editUrl: 'https://github.com/your-username/your-repo/tree/main/',
+      onInlineTags: 'warn',
+      onInlineAuthors: 'warn',
+      onUntruncatedBlogPosts: 'warn',
+    },
+  ],
+  // AI-generated blog
+  [
+    '@docusaurus/plugin-content-blog',
+    {
+      id: 'ai-blog',
+      routeBasePath: 'ai-blog', // URL: /ai-blog
+      path: './_ai-blog',
+      showReadingTime: true,
+      feedOptions: {
+        type: ['rss', 'atom'],
+        xslt: true,
+      },
+      editUrl: 'https://github.com/your-username/your-repo/tree/main/',
+      onInlineTags: 'warn',
+      onInlineAuthors: 'warn',
+      onUntruncatedBlogPosts: 'warn',
+    },
+  ],
+],
+```
+
+### Create the blog directories and files:
+
+```bash
+# Create directories
+mkdir _human-blog _ai-blog
+
+# Create authors.yml for each blog
+# _human-blog/authors.yml
+cat > _human-blog/authors.yml << 'EOF'
+john_doe:
+  name: John Doe
+  title: Senior Developer
+  url: https://github.com/johndoe
+  image_url: https://github.com/johndoe.png
+
+jane_smith:
+  name: Jane Smith
+  title: Product Manager
+  url: https://linkedin.com/in/janesmith
+  image_url: https://github.com/janesmith.png
+EOF
+
+# _ai-blog/authors.yml
+cat > _ai-blog/authors.yml << 'EOF'
+ai_assistant:
+  name: AI Assistant
+  title: Artificial Intelligence
+  url: https://openai.com
+  image_url: /img/ai-avatar.png
+EOF
+
+# Create tags.yml for each blog
+# _human-blog/tags.yml
+cat > _human-blog/tags.yml << 'EOF'
+development:
+  label: Development
+  description: Software development topics
+
+design:
+  label: Design
+  description: UI/UX design and principles
+EOF
+
+# _ai-blog/tags.yml
+cat > _ai-blog/tags.yml << 'EOF'
+automation:
+  label: Automation
+  description: AI-powered automation tools
+
+analysis:
+  label: Analysis
+  description: Data analysis and insights
+EOF
+```
+
+### Add blog links to navbar:
+
+```typescript
+// In docusaurus.config.ts themeConfig.navbar.items
+items: [
+  // ... other items
+  {to: '/human-blog', label: 'Human Blog', position: 'left'},
+  {to: '/ai-blog', label: 'AI Blog', position: 'left'},
+  // ... other items
+],
+```
+
+## 3. Creating Multiple Documentation Sections
+
+Add multiple documentation sections by adding plugins to `docusaurus.config.ts`:
+
+```typescript
+plugins: [
+  // ... blog plugins above
+  [
+    '@docusaurus/plugin-content-docs',
+    {
+      id: 'weeks',
+      path: '_weeks',
+      routeBasePath: 'weeks',
+      sidebarPath: './sidebars.ts',
+    },
+  ],
+  [
+    '@docusaurus/plugin-content-docs',
+    {
+      id: 'people',
+      path: '_people',
+      routeBasePath: 'people',
+      sidebarPath: './sidebars.ts',
+    },
+  ],
+  [
+    '@docusaurus/plugin-content-docs',
+    {
+      id: 'projects',
+      path: '_projects',
+      routeBasePath: 'projects',
+      sidebarPath: './sidebars.ts',
+    },
+  ],
+  [
+    '@docusaurus/plugin-content-docs',
+    {
+      id: 'tools',
+      path: '_tools',
+      routeBasePath: 'tools',
+      sidebarPath: './sidebars.ts',
+    },
+  ],
+  [
+    '@docusaurus/plugin-content-docs',
+    {
+      id: 'maneuvers',
+      path: '_maneuvers',
+      routeBasePath: 'maneuvers',
+      sidebarPath: './sidebars.ts',
+    },
+  ],
+],
+```
+
+### Create the documentation directories:
+
+```bash
+mkdir _weeks _people _projects _tools _maneuvers
+
+# Create intro.md files for each section
+echo "# Weeks Documentation" > _weeks/intro.md
+echo "# People Documentation" > _people/intro.md
+echo "# Projects Documentation" > _projects/intro.md
+echo "# Tools Documentation" > _tools/intro.md
+echo "# Maneuvers Documentation" > _maneuvers/intro.md
+```
+
+### Add documentation sections to sidebar configuration in `sidebars.ts`:
+
+```typescript
+import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+
+const sidebars: SidebarsConfig = {
+  // Default docs sidebar
+  tutorialSidebar: [
+    'intro',
+    'hello',
+    {
+      type: 'category',
+      label: 'Tutorial',
+      items: ['tutorial-basics/create-a-document'],
+    },
+  ],
+
+  // Additional sidebars for each docs section
+  weeksSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: '.',
+    },
+  ],
+  
+  peopleSidebar: [
+    {
+      type: 'autogenerated', 
+      dirName: '.',
+    },
+  ],
+
+  projectsSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: '.',
+    },
+  ],
+
+  toolsSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: '.',
+    },
+  ],
+
+  maneuversSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: '.',
+    },
+  ],
+};
+
+export default sidebars;
+```
+
+### Add documentation links to navbar:
+
+```typescript
+// In docusaurus.config.ts themeConfig.navbar.items
+items: [
+  {
+    type: 'docSidebar',
+    sidebarId: 'tutorialSidebar',
+    position: 'left',
+    label: 'Tutorial',
+  },
+  {
+    type: 'docSidebar',
+    sidebarId: 'weeksSidebar',
+    docsPluginId: 'weeks',
+    position: 'left',
+    label: 'Weeks',
+  },
+  {
+    type: 'docSidebar',
+    sidebarId: 'peopleSidebar',
+    docsPluginId: 'people',
+    position: 'left',
+    label: 'People',
+  },
+  {
+    type: 'docSidebar',
+    sidebarId: 'projectsSidebar',
+    docsPluginId: 'projects',
+    position: 'left',
+    label: 'Projects',
+  },
+  {
+    type: 'docSidebar',
+    sidebarId: 'toolsSidebar',
+    docsPluginId: 'tools',
+    position: 'left',
+    label: 'Tools',
+  },
+  {
+    type: 'docSidebar',
+    sidebarId: 'maneuversSidebar',
+    docsPluginId: 'maneuvers',
+    position: 'left',
+    label: 'Maneuvers',
+  },
+  // ... blog links
+],
+```
+
+## 4. Customizing the Homepage
+
+Replace the default `src/pages/index.tsx` with custom content:
+
+```tsx
+import type {ReactNode} from 'react';
+import clsx from 'clsx';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Layout from '@theme/Layout';
+import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import Heading from '@theme/Heading';
+
+import styles from './index.module.css';
+
+function HomepageHeader() {
+  const {siteConfig} = useDocusaurusContext();
+  return (
+    <header className={clsx('hero hero--primary', styles.heroBanner)}>
+      <div className="container">
+        <Heading as="h1" className="hero__title">
+          {siteConfig.title}
+        </Heading>
+        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <div className={styles.buttons}>
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/intro">
+            Get Started - 5min ⏱️
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default function Home(): ReactNode {
+  const {siteConfig} = useDocusaurusContext();
+  return (
+    <div style={{position: 'relative', minHeight: '100vh'}}>
+      {/* Video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
+          zIndex: -1,
+          pointerEvents: 'none',
+        }}
+        onError={(e) => {
+          console.log('Video failed to load:', e);
+          e.currentTarget.style.display = 'none';
+        }}
+      >
+        <source src="/bg.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      
+      <Layout
+        title={`Hello from ${siteConfig.title}`}
+        description="Description will go into a meta tag in <head />">
+        <HomepageHeader />
+        <main>
+          <HomepageFeatures />
+        </main>
+      </Layout>
+    </div>
+  );
+}
+```
+
+### Add a background video:
+
+```bash
+# Place your video file in static/
+cp your-background-video.mp4 static/bg.mp4
+```
+
+## 5. Adding Other Random Pages
+
+Create additional standalone pages in `src/pages/`:
+
+### React Page (`src/pages/about.tsx`):
+
+```tsx
+import Layout from '@theme/Layout';
+import Heading from '@theme/Heading';
+
+export default function About() {
+  return (
+    <Layout title="About" description="About our project">
+      <div className="container margin-vert--lg">
+        <div className="row">
+          <div className="col col--8 col--offset-2">
+            <Heading as="h1">About Our Project</Heading>
+            <p>
+              This is a custom page created with React. You can add any
+              React components, custom styling, and interactive features here.
+            </p>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+}
+```
+
+### Markdown Page (`src/pages/contact.md`):
+
+```markdown
+---
+title: Contact Us
+description: Get in touch with our team
+---
+
+# Contact Us
+
+You don't need React to write simple standalone pages.
+
+## Email
+- General inquiries: hello@example.com
+- Support: support@example.com
+
+## Office
+123 Main Street  
+City, State 12345
+```
+
+### MDX Page with Components (`src/pages/features.mdx`):
+
+```mdx
+---
+title: Features
+description: Explore our amazing features
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Features
+
+This page uses MDX, which allows you to use JSX components in Markdown.
+
+<Tabs>
+  <TabItem value="performance" label="Performance">
+    Lightning fast build times and optimized bundles.
+  </TabItem>
+  <TabItem value="accessibility" label="Accessibility">
+    Built with accessibility in mind from the ground up.
+  </TabItem>
+  <TabItem value="seo" label="SEO">
+    SEO-friendly with meta tags and structured data.
+  </TabItem>
+</Tabs>
+
+## Interactive Elements
+
+You can include any React component in MDX files!
+```
+
+## 6. Changing Global Styling
+
+Modify `src/css/custom.css` to customize the global appearance:
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;900&display=swap');
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  /* Custom fonts */
+  --ifm-font-family-base: 'Inter', system-ui, sans-serif;
+  --ifm-heading-font-family: 'Inter', system-ui, sans-serif;
+  --ifm-font-weight-normal: 500;
+  --ifm-heading-font-weight: 900;
+  
+  /* Custom colors */
+  --ifm-color-primary: #2e8555;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  
+  /* Code styling */
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* Global body styling */
+body {
+  font-family: var(--ifm-font-family-base);
+  font-weight: 500;
+}
+
+/* Heading styling */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+/* Dark mode colors */
+[data-theme='dark'] {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Custom navbar styling */
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+[data-theme='dark'] .navbar {
+  background: rgba(24, 25, 26, 0.95);
+}
+
+/* Custom hero styling */
+.hero {
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+}
+
+/* Custom button styling */
+.button {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom card styling */
+.card {
+  border-radius: 12px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom table styling */
+table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Custom code block styling */
+.prism-code {
+  border-radius: 8px;
+}
+
+/* Custom sidebar styling */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* Custom footer styling */
+.footer {
+  background: var(--ifm-color-emphasis-100);
+}
+
+[data-theme='dark'] .footer {
+  background: var(--ifm-color-emphasis-200);
+}
+```
+
+## 7. Additional Configuration Tips
+
+### Update site metadata in `docusaurus.config.ts`:
+
+```typescript
+const config: Config = {
+  title: 'Your Site Name',
+  tagline: 'Your amazing tagline',
+  favicon: 'img/favicon.ico',
+  url: 'https://your-site.com',
+  baseUrl: '/',
+  organizationName: 'your-username',
+  projectName: 'your-repo-name',
+  // ... rest of config
+};
+```
+
+### Add custom favicon and logo:
+
+```bash
+# Replace default files in static/img/
+cp your-favicon.ico static/img/favicon.ico
+cp your-logo.svg static/img/logo.svg
+```
+
+## 8. Building and Deployment
+
+```bash
+# Build the site
+npm run build
+
+# Serve locally to test
+npm run serve
+
+# Deploy to GitHub Pages (if configured)
+npm run deploy
+```
+
+## File Structure Summary
+
+After following this guide, your project structure should look like:
+
+```
+my-website/
+├── _ai-blog/           # AI blog posts
+├── _human-blog/        # Human blog posts  
+├── _weeks/             # Weeks documentation
+├── _people/            # People documentation
+├── _projects/          # Projects documentation
+├── _tools/             # Tools documentation
+├── _maneuvers/         # Maneuvers documentation
+├── docs/               # Default documentation
+├── src/
+│   ├── components/     # React components
+│   ├── css/
+│   │   └── custom.css  # Global styles
+│   └── pages/          # Custom pages
+│       ├── index.tsx   # Homepage
+│       ├── about.tsx   # About page
+│       ├── contact.md  # Contact page
+│       └── features.mdx # Features page
+├── static/             # Static assets
+├── docusaurus.config.ts # Main configuration
+└── sidebars.ts         # Sidebar configuration
+```
+
+This setup gives you a highly flexible Docusaurus site with multiple content types, custom styling, and additional functionality.
+
