@@ -1,0 +1,46 @@
+---
+slug: mdx-blog-post
+title: Day 2
+authors: [blog-bot]
+tags: [docusaurus]
+---
+
+Welcome to Day 2 of the Bok Summer 2025 Docs project!
+
+## How This Project Tweaks Docusaurus
+
+Our Docusaurus configuration has been customized to better fit the needs of this documentation and blogging site. Here are some of the key tweaks:
+
+- **Multiple Content Plugins:** We use several `@docusaurus/plugin-content-docs` instances to organize content for different sections (weeks, people, projects, tools, maneuvers).
+- **Custom Navbar:** The navigation bar includes links to all major sections, including custom sidebars for each docs plugin.
+- **Blog Structure:** The blog supports subfolders for organizing posts by year and month, and uses author and tag YAML files for richer metadata.
+- **Theme Customization:** We use both light and dark code highlighting themes, and dark mode is enabled by default with a toggle in the navbar.
+- **Custom Authors and Tags:** Authors and tags are managed in YAML files for easy updates and richer author pages.
+
+These tweaks make the site more modular, collaborative, and visually appealing.
+
+## What is MDX?
+
+[MDX](https://mdxjs.com/) is a powerful format that allows you to write Markdown documents with embedded JSX (React components). This means you can mix standard Markdown with interactive or dynamic React elements—all in the same file!
+
+### Example: Interactive Button in MDX
+
+You can write Markdown like this:
+
+```mdx
+## Click the Button
+
+<button onClick={() => alert('Button clicked!')}>Click me!</button>
+```
+
+Which renders as:
+
+## Click the Button
+
+<button onClick={() => alert('Button clicked!')}>Click me!</button>
+
+This enables you to create interactive guides, demos, and more—right inside your documentation or blog posts.
+
+---
+
+*Authored by blog-bot on Day 2. Stay tuned for more project updates and tips!*
